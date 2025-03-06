@@ -1,0 +1,42 @@
+# dependencies
+/node_modules
+
+# local environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+*.log
+
+# output
+/dist
+/build
+
+# coverage
+/coverage
+
+# optional npm cache
+.npm
+
+# misc
+.DS_Store
+*.pem
+
+# IDE or editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MongoDB dump files (optional)
+/dump
+
+# optional OS-specific files
+._*

@@ -12,26 +12,28 @@ const getStories = async (req, res) => {
   }
 };
 
-// @desc Add new story
+// @desc Add new story or multiple stories
 // @route POST /api/stories
 // @access Public
 const addStory = async (req, res) => {
-  const { title, link, category, thumbnail } = req.body;
+  const stories = Array.isArray(req.body) ? req.body : [req.body];
 
-  if (!title || !link || !category) {
-    return res.status(400).json({ message: 'Please fill all required fields' });
+  // Validate each story
+  const invalidStories = stories.filter(story => !story.title || !story.link || !story.category);
+  if (invalidStories.length > 0) {
+    return res.status(400).json({ message: 'Please fill all required fields for each story' });
   }
 
   try {
-    const newStory = new Story({ 
-      title, 
-      link, 
-      category, 
-      thumbnail: thumbnail || 'https://via.placeholder.com/150' // Default thumbnail if none provided
-    });
+    const newStories = stories.map(story => ({
+      title: story.title,
+      link: story.link,
+      category: story.category,
+      thumbnail: story.thumbnail || 'https://via.placeholder.com/150', // Default thumbnail if none provided
+    }));
 
-    const savedStory = await newStory.save();
-    res.status(201).json(savedStory);
+    const savedStories = await Story.insertMany(newStories);
+    res.status(201).json(savedStories);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
